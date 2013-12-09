@@ -1,26 +1,25 @@
 #!/bin/bash
 
+test_name=$1
 test_time=600
 
-nodes=( node1 node2 node3 )
+#nodes=( node1 node2 node3 )
+#nodes=`vagrant status | grep "running (" | awk '{print $1}'`
+
+nodes=( node1 )
+
 
 # Initialize test
 echo "Initializing sysbench"
 vagrant ssh ${nodes[0]} -c "/vagrant/tests/init_sysbench.sh"
 
-# Start stats collection
-echo "Starting stats collection"
-for node in "${nodes[@]}" 
-do
-	vagrant ssh $node -c "rm -f /var/lib/pt-stalk/*; pt-stalk --no-stalk --run-time=$test_time --iterations=1 --prefix=$node > /dev/null" &
-done
-
 # Start sysbench
 echo "Starting tests"
 for node in "${nodes[@]}" 
 do
-	vagrant ssh $node -c "/vagrant/tests/run_sysbench.sh" > results/$node_sysbench.log &
-	vagrant ssh $node -c "/vagrant/tests/run_sysbench.sh" > results/$node_sysbench.log &
+	mkdir -p results/$test_name/$node
+	vagrant ssh $node -c "/vagrant/tests/gather_stats.sh" &
+	vagrant ssh $node -c "/vagrant/tests/run_sysbench.sh" > results/$test_name/$node/sysbench.log &
 done
 
 echo "Sleeping until tests are done"
@@ -32,8 +31,9 @@ for node in "${nodes[@]}"
 do
 	tmp_ssh_config=`mktemp`
 	vagrant ssh-config $node > $tmp_ssh_config
-
-	scp -F $tmp_ssh_config $node:/var/lib/pt-stalk/$node-* results
+	
+	mkdir -p results/$test_name/$node
+	scp -r -F $tmp_ssh_config $node:/tmp/pxc_test/* results/$test_name/$node/.
 
 	rm -f $tmp_ssh_config
 done
