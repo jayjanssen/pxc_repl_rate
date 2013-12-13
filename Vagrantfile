@@ -1,1 +1,1 @@
-Vagrantfile-5.5-standalone
+Vagrantfile-5.6-standalone

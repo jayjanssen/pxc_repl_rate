@@ -8,6 +8,8 @@ test_time=600
 
 nodes=( node1 )
 
+# Clean out existing results
+rm -rf results/$test_name
 
 # Initialize test
 echo "Initializing sysbench"
@@ -36,4 +38,14 @@ do
 	scp -r -F $tmp_ssh_config $node:/tmp/pxc_test/* results/$test_name/$node/.
 
 	rm -f $tmp_ssh_config
+done
+
+# Generating graphs
+echo "Generating graphs"
+for node in "${nodes[@]}" 
+do
+	cd results/$test_name/$node
+	pcs-graph-mysqladmin.sh mysqladmin.out all
+	cp graphs/MySQL_Statements_Regular.png ../../$test_name-statements.png
+	cd ../../../
 done

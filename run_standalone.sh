@@ -8,24 +8,13 @@
 
 vagrant destroy -f
 ln -sf Vagrantfile-5.5-standalone Vagrantfile
-vagrant up
-./run_test.sh certify-5.5-control
+vagrant up --provider=aws
+./run_test.sh perf-5.5-control
 
 vagrant destroy -f
 ln -sf Vagrantfile-5.6-standalone Vagrantfile
-vagrant up
-./run_test.sh certify-5.6-control
+vagrant up --provider=aws
+./run_test.sh perf-5.6-control
 
-
-#Now PXC
-vagrant destroy -f
-ln -sf Vagrantfile-5.5 Vagrantfile
-vagrant up node1
-./run_test.sh certify-5.5-pxc
-
-vagrant destroy -f
-ln -sf Vagrantfile-5.6 Vagrantfile
-vagrant up node1
-./run_test.sh certify-5.6-pxc
 
 vagrant destroy -f
