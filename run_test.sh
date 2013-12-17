@@ -24,7 +24,7 @@ do
 done
 
 # Run test only on first node
-vagrant ssh ${nodes[0]} -c "/vagrant/tests/run_sysbench.sh" > results/$test_name/$node/sysbench.log &
+vagrant ssh ${nodes[0]} -c "/vagrant/tests/run_sysbench.sh" > results/$test_name/sysbench.log &
 
 echo "Sleeping until tests are done"
 sleep $test_time
@@ -40,14 +40,4 @@ do
 	scp -r -F $tmp_ssh_config $node:/tmp/pxc_test/* results/$test_name/$node/.
 
 	rm -f $tmp_ssh_config
-done
-
-# Generating graphs
-echo "Generating graphs"
-for node in "${nodes[@]}" 
-do
-	cd results/$test_name/$node
-	pcs-graph-mysqladmin.sh mysqladmin.out all
-	cp graphs/MySQL_Statements_Regular.png ../../$test_name-statements.png
-	cd ../../../
 done
