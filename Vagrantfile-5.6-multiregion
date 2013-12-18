@@ -15,7 +15,6 @@ puppet_config = {
     'experimental_repo'             => 'yes',
     'percona_server_version'        => '56',
     'wsrep_retry_autocommit'        => '0',
-	'wsrep_provider_options' => 'gcs.fc_limit=1000000;gmcast.segment=1',
 	'extra_mysqld_config' => "performance_schema = OFF
 innodb_checksum_algorithm=CRC32
 metadata_locks_hash_instances=256",
@@ -62,7 +61,10 @@ Vagrant.configure("2") do |config|
 					}
 				]
 				provision_puppet( override, 'pxc.pp', 
-					puppet_config.merge( 'datadir_dev' => 'xvdb' )
+					puppet_config.merge( 
+						'datadir_dev' => 'xvdb',
+						'wsrep_provider_options' => "gcs.fc_limit=1000000;gmcast.segment=" + node_params['segment']
+					)
 				)
 			}
 
@@ -70,7 +72,7 @@ Vagrant.configure("2") do |config|
 				provision_puppet( override, 'pxc.pp', 
 					puppet_config.merge(
 						'datadir_dev' => 'dm-2', 
-						'wsrep_provider_options' => "gmcast.segment=" + node_params['segment']
+						'wsrep_provider_options' => "gcs.fc_limit=1000000;gmcast.segment=" + node_params['segment']
 					)
 				)
 

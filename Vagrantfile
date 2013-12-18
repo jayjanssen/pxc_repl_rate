@@ -1,1 +1,1 @@
-Vagrantfile-5.6-multiregion-nosegment
+Vagrantfile-5.6-multiregion

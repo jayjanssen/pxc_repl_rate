@@ -1,7 +1,7 @@
 #!/bin/bash
 
 test_name=$1
-test_time=600
+test_time=60
 
 nodes=( node1 node2 node3 )
 #nodes=`vagrant status | grep "running (" | awk '{print $1}'`

@@ -6,16 +6,14 @@
 
 
 
-vagrant destroy -f
-ln -sf Vagrantfile-5.6-multiregion-nosegment Vagrantfile
-vagrant up --provider=aws
-./vagrant-percona/pxc-bootstrap.sh
-./run_test.sh multiregion-nosegment
+#vagrant destroy -f
+#ln -sf Vagrantfile-5.6-multiregion-nosegment Vagrantfile
+#vagrant up --provider=aws
+#./vagrant-percona/pxc-bootstrap.sh
+#./run_test.sh multiregion-nosegment
 
 ln -sf Vagrantfile-5.6-multiregion Vagrantfile
-vagrant up --provider=aws
 vagrant provision
-./vagrant-percona/pxc-bootstrap.sh
 ./run_test.sh multiregion-segment
 
-vagrant destroy -f
+#vagrant destroy -f
