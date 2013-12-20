@@ -1,3 +1,4 @@
 .vagrant
 results/*
 *.DS_Store
+*._*
