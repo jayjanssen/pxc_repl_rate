@@ -11,10 +11,6 @@ nodes=( node1 node2 node3 )
 # Clean out existing results
 rm -rf results/$test_name
 
-# Initialize test
-echo "Initializing sysbench"
-vagrant ssh ${nodes[0]} -c "/vagrant/tests/init_sysbench.sh"
-
 # Start stats gathering
 echo "Starting tests"
 for node in "${nodes[@]}" 
