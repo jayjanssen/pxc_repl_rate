@@ -32,7 +32,7 @@ function kill_collection() {
 }
 
 
-sleep 600
+sleep $1
 kill_collection
 
 wait ${mpstat_pid}
